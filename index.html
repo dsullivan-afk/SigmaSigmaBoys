@@ -5,44 +5,136 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sigma Sigma Boys Society Simulator</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Animation for button clicks */
+    .button-click {
+      transition: transform 0.1s ease;
+    }
+    .button-click:active {
+      transform: scale(0.95);
+    }
+    /* Animation for point increments */
+    .point-flash {
+      animation: flash 0.3s ease;
+    }
+    @keyframes flash {
+      0% { color: #10B981; }
+      50% { color: #34D399; }
+      100% { color: white; }
+    }
+    /* Bounce animation for counters */
+    .bounce {
+      animation: bounce 0.5s ease;
+    }
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+    /* Background pulse animation */
+    .bg-pulse {
+      animation: pulse 8s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0% { background-color: #1F2937; }
+      50% { background-color: #2D3748; }
+      100% { background-color: #1F2937; }
+    }
+    /* SVG button hover effect */
+    .svg-button:hover .svg-fill {
+      fill: #D1D5DB;
+    }
+  </style>
 </head>
 <body class="bg-gray-900 text-white font-sans min-h-screen">
-  <div class="container mx-auto p-4">
+  <div class="container mx-auto p-4 bg-pulse rounded-lg">
     <h1 class="text-4xl font-bold text-center mb-6 text-purple-400">Sigma Sigma Boys Society Simulator</h1>
     
     <div class="text-center mb-6">
-      <p class="text-2xl">Sigma Points: <span id="sigmaPoints">0</span></p>
-      <p class="text-xl">Rizz Level: <span id="rizzLevel">1</span> (x<span id="rizzMultiplier">1.0</span>)</p>
-      <p class="text-xl">Sigma Members: <span id="sigmaCount">0</span></p>
-      <p class="text-xl">Skibbidy Clubs: <span id="clubCount">0</span></p>
-      <p class="text-xl">Skibbitygram Posts: <span id="postCount">0</span></p>
+      <p class="text-2xl flex justify-center items-center">
+        Sigma Points: <span id="sigmaPoints" class="ml-2">0</span>
+        <svg class="w-6 h-6 ml-2" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2">
+          <path d="M12 2L2 22h20L12 2z"/>
+        </svg>
+      </p>
+      <p class="text-xl flex justify-center items-center">
+        Rizz Level: <span id="rizzLevel" class="ml-2">1</span> (x<span id="rizzMultiplier" class="ml-1">1.0</span>)
+        <svg class="w-5 h-5 ml-2" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </p>
+      <p class="text-xl flex justify-center items-center">
+        Sigma Members: <span id="sigmaCount" class="ml-2">0</span>
+        <svg class="w-5 h-5 ml-2" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+        </svg>
+      </p>
+      <p class="text-xl flex justify-center items-center">
+        Skibbidy Clubs: <span id="clubCount" class="ml-2">0</span>
+        <svg class="w-5 h-5 ml-2" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2">
+          <path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/>
+        </svg>
+      </p>
+      <p class="text-xl flex justify-center items-center">
+        Skibbitygram Posts: <span id="postCount" class="ml-2">0</span>
+        <svg class="w-5 h-5 ml-2" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </p>
     </div>
 
     <div class="flex justify-center mb-6 space-x-4">
-      <button id="grindButton" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full text-xl transition duration-300">
-        Grind for Sigma Points
+      <button id="grindButton" class="button-click">
+        <svg class="w-32 h-12 svg-button" viewBox="0 0 120 40" fill="none">
+          <rect x="2" y="2" width="116" height="36" rx="18" fill="#7C3AED" class="svg-fill"/>
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14">Grind for Sigma Points</text>
+        </svg>
       </button>
-      <button id="postSkibbitygram" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-6 rounded-full text-xl transition duration-300">
-        Post on Skibbitygram (20 SP)
+      <button id="postSkibbitygram" class="button-click">
+        <svg class="w-32 h-12 svg-button" viewBox="0 0 120 40" fill="none">
+          <rect x="2" y="2" width="116" height="36" rx="18" fill="#D97706" class="svg-fill"/>
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14">Post on Skibbitygram (20 SP)</text>
+        </svg>
       </button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="bg-gray-800 p-4 rounded-lg">
         <h2 class="text-2xl font-bold mb-4">Recruit Sigma</h2>
-        <button id="recruitChad" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mb-2">Sigma Chad (100 SP)</button>
-        <button id="recruitRizzler" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">Rizzler (500 SP)</button>
+        <button id="recruitChad" class="w-full button-click mb-2">
+          <svg class="w-full h-10 svg-button" viewBox="0 0 200 40" fill="none">
+            <rect x="2" y="2" width="196" height="36" rx="18" fill="#2563EB" class="svg-fill"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14">Sigma Chad (100 SP)</text>
+          </svg>
+        </button>
+        <button id="recruitRizzler" class="w-full button-click">
+          <svg class="w-full h-10 svg-button" viewBox="0 0 200 40" fill="none">
+            <rect x="2" y="2" width="196" height="36" rx="18" fill="#2563EB" class="svg-fill"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14">Rizzler (500 SP)</text>
+          </svg>
+        </button>
       </div>
       
       <div class="bg-gray-800 p-4 rounded-lg">
         <h2 class="text-2xl font-bold mb-4">Upgrade Rizz</h2>
-        <button id="upgradeRizz" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">Upgrade Rizz (200 SP)</button>
+        <button id="upgradeRizz" class="w-full button-click">
+          <svg class="w-full h-10 svg-button" viewBox="0 0 200 40" fill="none">
+            <rect x="2" y="2" width="196" height="36" rx="18" fill="#059669" class="svg-fill"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14">Upgrade Rizz (200 SP)</text>
+          </svg>
+        </button>
         <p class="mt-2">Increases point multiplier by 0.1x</p>
       </div>
       
       <div class="bg-gray-800 p-4 rounded-lg">
         <h2 class="text-2xl font-bold mb-4">Skibbidy Clubs</h2>
-        <button id="unlockClub" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">Unlock Club (1000 SP)</button>
+        <button id="unlockClub" class="w-full button-click">
+          <svg class="w-full h-10 svg-button" viewBox="0 0 200 40" fill="none">
+            <rect x="2" y="2" width="196" height="36" rx="18" fill="#B91C1C" class="svg-fill"/>
+            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="14">Unlock Club (1000 SP)</text>
+          </svg>
+        </button>
         <p class="mt-2">Each club adds 10 SP/s</p>
       </div>
     </div>
@@ -80,11 +172,27 @@
     };
 
     function updateDisplay() {
+      if (parseInt(elements.sigmaPoints.textContent) !== Math.floor(sigmaPoints)) {
+        elements.sigmaPoints.classList.add('point-flash');
+        setTimeout(() => elements.sigmaPoints.classList.remove('point-flash'), 300);
+      }
       elements.sigmaPoints.textContent = Math.floor(sigmaPoints);
       elements.rizzLevel.textContent = rizzLevel;
       elements.rizzMultiplier.textContent = rizzMultiplier.toFixed(1);
+      if (parseInt(elements.sigmaCount.textContent) !== sigmaCount) {
+        elements.sigmaCount.classList.add('bounce');
+        setTimeout(() => elements.sigmaCount.classList.remove('bounce'), 500);
+      }
       elements.sigmaCount.textContent = sigmaCount;
+      if (parseInt(elements.clubCount.textContent) !== clubCount) {
+        elements.clubsCount.classList.add('bounce');
+        setTimeout(() => elements.clubCount.classList.remove('bounce'), 500);
+      }
       elements.clubCount.textContent = clubCount;
+      if (parseInt(elements.postCount.textContent) !== postCount) {
+        elements.postCount.classList.add('bounce');
+        setTimeout(() => elements.postCount.classList.remove('bounce'), 500);
+      }
       elements.postCount.textContent = postCount;
     }
 
