@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sigma Sigma Boys Society Simulator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen">
+  <div class="container mx-auto p-4">
+    <h1 class="text-4xl font-bold text-center mb-6 text-purple-400">Sigma Sigma Boys Society Simulator</h1>
+    
+    <div class="text-center mb-6">
+      <p class="text-2xl">Sigma Points: <span id="sigmaPoints">0</span></p>
+      <p class="text-xl">Rizz Level: <span id="rizzLevel">1</span> (x<span id="rizzMultiplier">1.0</span>)</p>
+      <p class="text-xl">Sigma Members: <span id="sigmaCount">0</span></p>
+      <p class="text-xl">Skibbidy Clubs: <span id="clubCount">0</span></p>
+      <p class="text-xl">Skibbitygram Posts: <span id="postCount">0</span></p>
+    </div>
+
+    <div class="flex justify-center mb-6 space-x-4">
+      <button id="grindButton" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full text-xl transition duration-300">
+        Grind for Sigma Points
+      </button>
+      <button id="postSkibbitygram" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-6 rounded-full text-xl transition duration-300">
+        Post on Skibbitygram (20 SP)
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4">Recruit Sigma</h2>
+        <button id="recruitChad" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mb-2">Sigma Chad (100 SP)</button>
+        <button id="recruitRizzler" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">Rizzler (500 SP)</button>
+      </div>
+      
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4">Upgrade Rizz</h2>
+        <button id="upgradeRizz" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">Upgrade Rizz (200 SP)</button>
+        <p class="mt-2">Increases point multiplier by 0.1x</p>
+      </div>
+      
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4">Skibbidy Clubs</h2>
+        <button id="unlockClub" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">Unlock Club (1000 SP)</button>
+        <p class="mt-2">Each club adds 10 SP/s</p>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <p class="text-lg text-yellow-400">Skibbitygram: Each post grants 1 random member every 10s</p>
+      <div id="message" class="text-yellow-400 mt-2"></div>
+    </div>
+  </div>
+
+  <script>
+    let sigmaPoints = 0;
+    let rizzLevel = 1;
+    let rizzMultiplier = 1.0;
+    let sigmaCount = 0;
+    let clubCount = 0;
+    let postCount = 0;
+    let chadCount = 0;
+    let rizzlerCount = 0;
+
+    const elements = {
+      sigmaPoints: document.getElementById('sigmaPoints'),
+      rizzLevel: document.getElementById('rizzLevel'),
+      rizzMultiplier: document.getElementById('rizzMultiplier'),
+      sigmaCount: document.getElementById('sigmaCount'),
+      clubCount: document.getElementById('clubCount'),
+      postCount: document.getElementById('postCount'),
+      message: document.getElementById('message'),
+      grindButton: document.getElementById('grindButton'),
+      recruitChad: document.getElementById('recruitChad'),
+      recruitRizzler: document.getElementById('recruitRizzler'),
+      upgradeRizz: document.getElementById('upgradeRizz'),
+      unlockClub: document.getElementById('unlockClub'),
+      postSkibbitygram: document.getElementById('postSkibbitygram')
+    };
+
+    function updateDisplay() {
+      elements.sigmaPoints.textContent = Math.floor(sigmaPoints);
+      elements.rizzLevel.textContent = rizzLevel;
+      elements.rizzMultiplier.textContent = rizzMultiplier.toFixed(1);
+      elements.sigmaCount.textContent = sigmaCount;
+      elements.clubCount.textContent = clubCount;
+      elements.postCount.textContent = postCount;
+    }
+
+    function calculateAutoPoints() {
+      return (chadCount * 1 + rizzlerCount * 5) + clubCount * 10;
+    }
+
+    function showMessage(text) {
+      elements.message.textContent = text;
+      setTimeout(() => elements.message.textContent = '', 2000);
+    }
+
+    elements.grindButton.addEventListener('click', () => {
+      sigmaPoints += rizzMultiplier;
+      updateDisplay();
+    });
+
+    elements.recruitChad.addEventListener('click', () => {
+      if (sigmaPoints >= 100) {
+        sigmaPoints -= 100;
+        sigmaCount++;
+        chadCount++;
+        showMessage('Recruited a Sigma Chad! +1 SP/s');
+        updateDisplay();
+      } else {
+        showMessage('Not enough Sigma Points!');
+      }
+    });
+
+    elements.recruitRizzler.addEventListener('click', () => {
+      if (sigmaPoints >= 500) {
+        sigmaPoints -= 500;
+        sigmaCount++;
+        rizzlerCount++;
+        showMessage('Recruited a Rizzler! +5 SP/s');
+        updateDisplay();
+      } else {
+        showMessage('Not enough Sigma Points!');
+      }
+    });
+
+    elements.upgradeRizz.addEventListener('click', () => {
+      if (sigmaPoints >= 200) {
+        sigmaPoints -= 200;
+        rizzLevel++;
+        rizzMultiplier += 0.1;
+        showMessage('Rizz Upgraded! Multiplier increased.');
+        updateDisplay();
+      } else {
+        showMessage('Not enough Sigma Points!');
+      }
+    });
+
+    elements.unlockClub.addEventListener('click', () => {
+      if (sigmaPoints >= 1000) {
+        sigmaPoints -= 1000;
+        clubCount++;
+        showMessage('Unlocked a Skibbidy Club! +10 SP/s');
+        updateDisplay();
+      } else {
+        showMessage('Not enough Sigma Points!');
+      }
+    });
+
+    elements.postSkibbitygram.addEventListener('click', () => {
+      if (sigmaPoints >= 20) {
+        sigmaPoints -= 20;
+        postCount++;
+        showMessage('Posted on Skibbitygram! +1 random member every 10s');
+        updateDisplay();
+      } else {
+        showMessage('Not enough Sigma Points! Need 20.');
+      }
+    });
+
+    setInterval(() => {
+      sigmaPoints += calculateAutoPoints() / 10;
+      updateDisplay();
+    }, 100);
+
+    setInterval(() => {
+      if (postCount > 0) {
+        for (let i = 0; i < postCount; i++) {
+          if (Math.random() < 0.5) {
+            chadCount++;
+            sigmaCount++;
+            showMessage('Skibbitygram recruited a Sigma Chad! +1 SP/s');
+          } else {
+            rizzlerCount++;
+            sigmaCount++;
+            showMessage('Skibbitygram recruited a Rizzler! +5 SP/s');
+          }
+        }
+        updateDisplay();
+      }
+    }, 10000);
+
+    updateDisplay();
+  </script>
+</body>
+</html>
